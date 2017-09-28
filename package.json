@@ -4,7 +4,7 @@
   "author": "SuperMap",
   "version": "2.2.0",
   "scripts": {
-    "build": "webpack ./src/L.D3SvgOverlay.js && uglifyjs --comments /Copyright©/i -c -m -o ./dist/d3Layer.min.js -- ./dist/d3Layer.js"
+    "build": "webpack ./src/L.D3SvgOverlay.js && uglifyjs --comments /Copyright©/i -c -m -o ./dist/leaflet-d3Layer.min.js -- ./dist/leaflet-d3Layer.js"
   },
   "repository": {
     "type": "git",

@@ -13,25 +13,17 @@ for manipulating documents based on data.
  * No need to reproject your geometries on zoom, this is done using SVG scaling
  * Zoom animation where Leaflet supports it
 
-*Compatible with Leaflet 0.7.x / 1.0.x*
-
-## Demo
-
-* [Simple example: Swiss cities](http://bl.ocks.org/xEviL/4921fff1d70f5601d159)
-* [GeoJSON with D3](http://bl.ocks.org/xEviL/0c4f628645c6c21c8b3a)
-
 ## Basic usage
 
 Include the dependency libraries:
 
-    <link href='https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.5/leaflet.css'
-               rel='stylesheet' type='text/css'/>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.5/leaflet-src.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.4.9/d3.min.js"></script>
+    <link href='https://cdn.bootcss.com/leaflet/1.0.3/leaflet.css' rel='stylesheet' type='text/css'/>
+    <script src="https://cdn.bootcss.com/leaflet/1.0.3/leaflet.js"></script>
+    <script src="https://cdn.bootcss.com/d3/4.10.2/d3.min.js"></script>
 
 Include the D3SvgOverlay library:
 
-    <script src="L.D3SvgOverlay.min.js"></script>
+    <script src="leaflet-d3Layer.min.js"></script>
 
 Create a map:
 
@@ -39,7 +31,7 @@ Create a map:
 
 Create an overlay:
 
-    var d3Overlay = L.d3SvgOverlay(function(selection, projection){
+    var d3Overlay = L.supermap.d3Layer(function(selection, projection){
     
         var updateSelection = selection.selectAll('circle').data(dataset);
         updateSelection.enter()
@@ -60,7 +52,7 @@ Note: within the drawing callback function you can and should use the normal [D3
 
 *Factory method*
 
-    L.d3SvgOverlay(<function> drawCallback, <options> options?)
+    L.supermap.d3Layer(<function> drawCallback, <options> options?)
 
  * `drawCallback`  - callback to draw/update overlay contents, it's called with arguments:
  * `options`  - overlay options object:
@@ -89,8 +81,8 @@ available methods/fields:
  * `unitsPerMeter`    - (float) this is a number of the overlay coordinate system units in 1 meter. Useful to get dimensions in meters.
  * `scale`  - scale of current zoom compared to the zoom level of overlay coordinate system. Useful if you want to make your elements of a size independent of zoom. Just divide the size by the scale.
  * `map`    - reference to the `L.Map` object, useful to get map state (zoom, viewport bounds, etc), especially when having multiple maps in the page.
- * `layer`  - reference to the `L.D3SvgOverlay` object, useful for extending behavior of the overlay.
- * `pathFromGeojson` - a [d3.geo.path](https://github.com/mbostock/d3/wiki/Geo-Paths#path) path generator object that can generate _SVG Path_ projected into the overlay's coordinate system from any [GeoJSON](http://geojson.org/)
+ * `layer`  - reference to the `L.supermap.d3Layer` object, useful for extending behavior of the overlay.
+ * `pathFromGeojson` - a [paths](https://github.com/d3/d3-geo/blob/master/README.md#paths) path generator object that can generate _SVG Path_ projected into the overlay's coordinate system from any [GeoJSON](http://geojson.org/)
 
 ## License
 

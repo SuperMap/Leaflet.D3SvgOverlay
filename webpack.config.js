@@ -1,6 +1,6 @@
 var webpack = require('webpack');
 var pkg = require('./package.json');
-var packageName = "d3Layer";
+var packageName = "leaflet-d3Layer";
 var banner = `
     Leaflet.D3SvgOverlay.(${pkg.homepage})
     Copyright© 2000-2017 SuperMap Software Co. Ltd
