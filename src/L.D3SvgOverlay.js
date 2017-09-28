@@ -7,7 +7,7 @@
  */
 
 import L from 'leaflet';
-import d3 from 'd3';
+import * as d3 from "d3";
 
 // Tiny stylesheet bundled here instead of a separate file
 if (L.version >= "1.0") {
@@ -19,6 +19,7 @@ if (L.version >= "1.0") {
 // Class definition
 export var D3SvgOverlay = (L.version < "1.0" ? L.Class : L.Layer).extend({
     includes: (L.version < "1.0" ? L.Mixin.Events : []),
+    version : "2.2",
 
     _undef: function (a) {
         return typeof a == "undefined"
@@ -158,8 +159,6 @@ export var D3SvgOverlay = (L.version < "1.0" ? L.Class : L.Layer).extend({
     }
 
 });
-
-L.D3SvgOverlay.version = "2.2";
 
 // Factory method
 export var d3SvgOverlay = function (drawCallback, options) {

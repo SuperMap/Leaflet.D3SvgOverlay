@@ -92,7 +92,9 @@ var _leaflet2 = _interopRequireDefault(_leaflet);
 
 var _d = __webpack_require__(3);
 
-var _d2 = _interopRequireDefault(_d);
+var d3 = _interopRequireWildcard(_d);
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -106,12 +108,13 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
  */
 
 if (_leaflet2.default.version >= "1.0") {
-    _d2.default.select("head").append("style").attr("type", "text/css").text("g.d3-overlay *{pointer-events:visiblePainted;}");
+    d3.select("head").append("style").attr("type", "text/css").text("g.d3-overlay *{pointer-events:visiblePainted;}");
 }
 
 // Class definition
 var D3SvgOverlay = exports.D3SvgOverlay = (_leaflet2.default.version < "1.0" ? _leaflet2.default.Class : _leaflet2.default.Layer).extend({
     includes: _leaflet2.default.version < "1.0" ? _leaflet2.default.Mixin.Events : [],
+    version: "2.2",
 
     _undef: function _undef(a) {
         return typeof a == "undefined";
@@ -176,12 +179,12 @@ var D3SvgOverlay = exports.D3SvgOverlay = (_leaflet2.default.version < "1.0" ? _
         // SVG element
         if (_leaflet2.default.version < "1.0") {
             map._initPathRoot();
-            this._svg = _d2.default.select(map._panes.overlayPane).select("svg");
+            this._svg = d3.select(map._panes.overlayPane).select("svg");
             this._rootGroup = this._svg.append("g");
         } else {
             this._svg = _leaflet2.default.svg();
             map.addLayer(this._svg);
-            this._rootGroup = _d2.default.select(this._svg._rootGroup).classed("d3-overlay", true);
+            this._rootGroup = d3.select(this._svg._rootGroup).classed("d3-overlay", true);
         }
         this._rootGroup.classed("leaflet-zoom-hide", this.options.zoomHide);
         this.selection = this._rootGroup;
@@ -215,7 +218,7 @@ var D3SvgOverlay = exports.D3SvgOverlay = (_leaflet2.default.version < "1.0" ? _
             var point = _layer.projection.latLngToLayerPoint(new _leaflet2.default.LatLng(y, x));
             this.stream.point(point.x, point.y);
         };
-        this.projection.pathFromGeojson = _d2.default.geoPath().projection(_d2.default.geoTransform({ point: this.projection._projectPoint }));
+        this.projection.pathFromGeojson = d3.geoPath().projection(d3.geoTransform({ point: this.projection._projectPoint }));
 
         // Compatibility with v.1
         this.projection.latLngToLayerFloatPoint = this.projection.latLngToLayerPoint;
@@ -249,8 +252,6 @@ var D3SvgOverlay = exports.D3SvgOverlay = (_leaflet2.default.version < "1.0" ? _
     }
 
 });
-
-_leaflet2.default.D3SvgOverlay.version = "2.2";
 
 // Factory method
 var d3SvgOverlay = exports.d3SvgOverlay = function d3SvgOverlay(drawCallback, options) {
