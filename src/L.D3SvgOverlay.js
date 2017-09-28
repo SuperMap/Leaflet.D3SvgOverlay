@@ -3,25 +3,11 @@
  *
  * @author Kirill Zhuravlev <kirill.zhuravlev@teralytics.ch>
  *
+ * Adapted to d3 v4 by SuperMap.
  */
 
-(function (factory) {
-   if (typeof define === 'function' && define.amd) {
-       define(['leaflet', 'd3'], factory);
-   } else if (typeof module === 'object' && module.exports) {
-       module.exports = factory(require('leaflet', 'd3'));
-   } else {
-       factory(L, d3);
-   }
-}(function (L, d3) {
-
-// Check requirements
-if (typeof d3 == "undefined") {
-    throw "D3 SVG Overlay for Leaflet requires D3 library loaded first";
-}
-if (typeof L == "undefined") {
-    throw "D3 SVG Overlay for Leaflet requires Leaflet library loaded first";
-}
+import L from 'leaflet';
+import d3 from 'd3';
 
 // Tiny stylesheet bundled here instead of a separate file
 if (L.version >= "1.0") {
@@ -31,10 +17,12 @@ if (L.version >= "1.0") {
 }
 
 // Class definition
-L.D3SvgOverlay = (L.version < "1.0" ? L.Class : L.Layer).extend({
+export var D3SvgOverlay = (L.version < "1.0" ? L.Class : L.Layer).extend({
     includes: (L.version < "1.0" ? L.Mixin.Events : []),
 
-    _undef: function(a){ return typeof a == "undefined" },
+    _undef: function (a) {
+        return typeof a == "undefined"
+    },
 
     _options: function (options) {
         if (this._undef(options)) {
@@ -46,12 +34,14 @@ L.D3SvgOverlay = (L.version < "1.0" ? L.Class : L.Layer).extend({
         return this.options = options;
     },
 
-    _disableLeafletRounding: function(){
+    _disableLeafletRounding: function () {
         this._leaflet_round = L.Point.prototype._round;
-        L.Point.prototype._round = function(){ return this; };
+        L.Point.prototype._round = function () {
+            return this;
+        };
     },
 
-    _enableLeafletRounding: function(){
+    _enableLeafletRounding: function () {
         L.Point.prototype._round = this._leaflet_round;
     },
 
@@ -77,10 +67,12 @@ L.D3SvgOverlay = (L.version < "1.0" ? L.Class : L.Layer).extend({
             ._subtract(this._wgsInitialShift.multiplyBy(this._scale));
 
         var shift = ["translate(", this._shift.x, ",", this._shift.y, ") "];
-        var scale = ["scale(", this._scale, ",", this._scale,") "];
+        var scale = ["scale(", this._scale, ",", this._scale, ") "];
         this._rootGroup.attr("transform", shift.concat(scale).join(""));
 
-        if (this.options.zoomDraw) { this.draw() }
+        if (this.options.zoomDraw) {
+            this.draw()
+        }
         this._enableLeafletRounding();
     },
 
@@ -127,12 +119,12 @@ L.D3SvgOverlay = (L.version < "1.0" ? L.Class : L.Layer).extend({
             layer: _layer,
             scale: 1
         };
-        this.projection._projectPoint = function(x, y) {
+        this.projection._projectPoint = function (x, y) {
             var point = _layer.projection.latLngToLayerPoint(new L.LatLng(y, x));
             this.stream.point(point.x, point.y);
         };
         this.projection.pathFromGeojson =
-            d3.geo.path().projection(d3.geo.transform({point: this.projection._projectPoint}));
+            d3.geoPath().projection(d3.geoTransform({point: this.projection._projectPoint}));
 
         // Compatibility with v.1
         this.projection.latLngToLayerFloatPoint = this.projection.latLngToLayerPoint;
@@ -147,7 +139,9 @@ L.D3SvgOverlay = (L.version < "1.0" ? L.Class : L.Layer).extend({
     },
 
     // Leaflet 1.0
-    getEvents: function() { return {zoomend: this._zoomChange}; },
+    getEvents: function () {
+        return {zoomend: this._zoomChange};
+    },
 
     onRemove: function (map) {
         if (L.version < "1.0") {
@@ -168,8 +162,8 @@ L.D3SvgOverlay = (L.version < "1.0" ? L.Class : L.Layer).extend({
 L.D3SvgOverlay.version = "2.2";
 
 // Factory method
-L.d3SvgOverlay = function (drawCallback, options) {
-    return new L.D3SvgOverlay(drawCallback, options);
+export var d3SvgOverlay = function (drawCallback, options) {
+    return new D3SvgOverlay(drawCallback, options);
 };
-
-}));
+L.supermap = L.supermap || {};
+L.supermap.d3Layer = d3SvgOverlay;
