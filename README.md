@@ -87,9 +87,3 @@ available methods/fields:
 ## License
 
 This code is provided under the MIT License (MIT).
-
-## Brought to you by [Teralytics AG](http://teralytics.net/)
-
-Interested in data analysis, big data, mapping and visualizations? Have experience in running big infrastructure? We're hiring!
-
-Find how to apply at [http://teralytics.net/](http://teralytics.net/)
