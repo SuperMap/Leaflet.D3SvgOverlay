@@ -126,7 +126,6 @@ var D3SvgOverlay = exports.D3SvgOverlay = (_leaflet2.default.version < "1.0" ? _
         }
         options.zoomHide = this._undef(options.zoomHide) ? false : options.zoomHide;
         options.zoomDraw = this._undef(options.zoomDraw) ? true : options.zoomDraw;
-
         return this.options = options;
     },
 
@@ -188,6 +187,15 @@ var D3SvgOverlay = exports.D3SvgOverlay = (_leaflet2.default.version < "1.0" ? _
         }
         this._rootGroup.classed("leaflet-zoom-hide", this.options.zoomHide);
         this.selection = this._rootGroup;
+
+        var me = this;
+        var oldOn = d3.selection.prototype.on;
+        d3.selection.prototype.on = function (t, n, e) {
+            oldOn.apply(me.selection, [t, n, e]);
+            me.map.on(t, function () {
+                me.selection.dispatch(t);
+            });
+        };
 
         // Init shift/scale invariance helper values
         this._pixelOrigin = map.getPixelOrigin();

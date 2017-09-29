@@ -19,7 +19,7 @@ if (L.version >= "1.0") {
 // Class definition
 export var D3SvgOverlay = (L.version < "1.0" ? L.Class : L.Layer).extend({
     includes: (L.version < "1.0" ? L.Mixin.Events : []),
-    version : "2.2",
+    version: "2.2",
 
     _undef: function (a) {
         return typeof a == "undefined"
@@ -31,7 +31,6 @@ export var D3SvgOverlay = (L.version < "1.0" ? L.Class : L.Layer).extend({
         }
         options.zoomHide = this._undef(options.zoomHide) ? false : options.zoomHide;
         options.zoomDraw = this._undef(options.zoomDraw) ? true : options.zoomDraw;
-
         return this.options = options;
     },
 
@@ -94,6 +93,15 @@ export var D3SvgOverlay = (L.version < "1.0" ? L.Class : L.Layer).extend({
         }
         this._rootGroup.classed("leaflet-zoom-hide", this.options.zoomHide);
         this.selection = this._rootGroup;
+
+        var me = this;
+        var oldOn = d3.selection.prototype.on;
+        d3.selection.prototype.on = function (t, n, e) {
+            oldOn.apply(me.selection, [t, n, e]);
+            me.map.on(t, function () {
+                me.selection.dispatch(t);
+            });
+        };
 
         // Init shift/scale invariance helper values
         this._pixelOrigin = map.getPixelOrigin();
