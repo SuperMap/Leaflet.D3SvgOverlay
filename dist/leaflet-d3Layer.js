@@ -193,7 +193,7 @@ var D3SvgOverlay = exports.D3SvgOverlay = (_leaflet2.default.version < "1.0" ? _
         d3.selection.prototype.on = function (t, n, e) {
             oldOn.apply(me.selection, [t, n, e]);
             me.map.on(t, function () {
-                me.selection.dispatch(t);
+                me.selection.dispatch(t, { detail: e.originalEvent });
             });
         };
 
